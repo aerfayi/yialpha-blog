@@ -1,0 +1,102 @@
+---
+// MainLayout.astro
+import "../styles/global.css";
+
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+}
+
+const {
+  title,
+  description = "YIAlpha 的个人博客",
+  image = "/covers/default-cover.jpg",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+
+    <!-- 基础 SEO -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta
+      name="keywords"
+      content="AI, Game AI, World Building, Astro, 开发笔记"
+    />
+    <meta name="author" content="YIAlpha" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- canonical -->
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    <meta
+      property="og:type"
+      content={Astro.url.pathname.startsWith("/blog") ? "article" : "website"}
+    />
+    <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site)} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="YIAlpha RSS Feed"
+      href="/rss.xml"
+    />
+  </head>
+
+  <body class="min-h-screen bg-[#070b14] text-zinc-100 overflow-x-hidden">
+    <!-- 背景 -->
+    <div class="fixed inset-0 -z-10">
+      <!-- 网格 -->
+      <div
+        class="absolute inset-0
+          bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),
+              linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)]
+          bg-[size:56px_56px]"
+      >
+      </div>
+
+      <!-- 光效 -->
+      <div
+        class="absolute top-[-200px] left-[-200px]
+          h-[500px] w-[500px]
+          rounded-full
+          bg-cyan-500/10
+          blur-[120px]"
+      >
+      </div>
+
+      <div
+        class="absolute bottom-[-200px] right-[-200px]
+          h-[500px] w-[500px]
+          rounded-full
+          bg-violet-500/10
+          blur-[120px]"
+      >
+      </div>
+    </div>
+
+    <Navbar />
+
+    <slot />
+
+    <Footer />
+  </body>
+</html>

@@ -1,0 +1,38 @@
+---
+import { getAllPosts, getRelatedPosts } from "../../utils/posts";
+import { render } from "astro:content";
+import BlogPost from "../../layouts/BlogPost.astro";
+import type { BlogPostWithMeta } from "../../utils/posts";
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+
+// 渲染 Markdown 内容
+const { Content } = await render(post);
+
+// 所有文章
+const allPosts: BlogPostWithMeta[] = await getAllPosts();
+
+// 上一篇 / 下一篇
+const currentIndex = allPosts.findIndex((p) => p.id === post.id);
+const prevPost = allPosts[currentIndex - 1] || null;
+const nextPost = allPosts[currentIndex + 1] || null;
+
+// 相关文章
+const relatedPosts = getRelatedPosts(post, allPosts, 3);
+---
+
+<BlogPost
+  post={post}
+  Content={Content}
+  prevPost={prevPost}
+  nextPost={nextPost}
+  relatedPosts={relatedPosts}
+/>

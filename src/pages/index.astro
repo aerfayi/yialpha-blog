@@ -1,0 +1,93 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import GlassCard from "../components/GlassCard.astro";
+import { getCollection } from "astro:content";
+
+const posts = await getCollection("blog");
+
+// 按时间排序
+posts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+// 给每篇文章统一封面字段（fallback）
+const postsWithCover = posts.map((post) => ({
+  ...post,
+  coverImage: post.data.cover || "/covers/default-cover.jpg",
+}));
+---
+
+<MainLayout title="YIAlpha">
+  <main class="mx-auto max-w-6xl px-8 py-32">
+    <!-- Hero -->
+    <section class="mb-24">
+      <p class="mb-6 uppercase tracking-[0.4em] text-cyan-300/70">
+        AI · GAME TECH · WORLD BUILDING
+      </p>
+      <h1 class="text-7xl md:text-8xl font-black mb-8">YIAlpha</h1>
+      <p class="text-xl leading-relaxed text-zinc-400 max-w-3xl">
+        一个记录 AI、游戏技术、开发过程与个人创作的博客。
+        <br />
+        关于学习、项目、世界观，以及未来想创造的东西。
+      </p>
+    </section>
+
+    <!-- 当前/未来计划 -->
+    <section class="grid md:grid-cols-2 gap-6 mb-24">
+      <GlassCard title="当前进行中" color="cyan">
+        <ul class="space-y-3 text-zinc-400">
+          <li>学习 LLM 与 AI Agent</li>
+          <li>研究 Game AI</li>
+          <li>折腾 Linux 与服务器</li>
+          <li>搭建个人博客</li>
+        </ul>
+      </GlassCard>
+
+      <GlassCard title="未来计划" color="violet">
+        <ul class="space-y-3 text-zinc-400">
+          <li>技术博客</li>
+          <li>项目展示</li>
+          <li>世界观设定</li>
+          <li>个人作品主页</li>
+        </ul>
+      </GlassCard>
+    </section>
+
+    <!-- 最新文章列表 -->
+    <section class="space-y-8">
+      {
+        postsWithCover.slice(0, 5).map((post) => (
+          <a
+            href={`/blog/${post.id}`}
+            class="group block rounded-3xl border border-white/5 bg-white/[0.03] p-8 backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-cyan-400/20 hover:bg-white/[0.05]"
+          >
+            <img
+              src={post.coverImage}
+              alt={post.data.title}
+              class="mb-4 w-full h-56 object-cover rounded-xl transition duration-500 group-hover:scale-[1.02]"
+            />
+            <p class="mb-2 text-sm text-zinc-500">
+              {post.data.pubDate.toLocaleDateString()} ·{" "}
+              {Math.max(
+                1,
+                Math.ceil((post.body ?? "").split(" ").length / 200),
+              )}{" "}
+              min read
+            </p>
+            <h2 class="mb-4 text-3xl font-bold transition group-hover:text-cyan-300">
+              {post.data.title}
+            </h2>
+            <p class="text-zinc-400">{post.data.description}</p>
+            {post.data.tags?.length > 0 && (
+              <div class="flex flex-wrap gap-3 mt-2">
+                {post.data.tags.map((tag) => (
+                  <span class="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-sm text-zinc-300">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </a>
+        ))
+      }
+    </section>
+  </main>
+</MainLayout>

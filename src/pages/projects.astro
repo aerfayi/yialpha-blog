@@ -1,0 +1,65 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+
+import SectionTitle from "../components/SectionTitle.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+---
+
+<MainLayout title="Projects">
+  <main class="mx-auto max-w-6xl px-8 py-32">
+    <!-- 标题 -->
+    <SectionTitle
+      eyebrow="PROJECTS"
+      title="项目"
+      description="
+      一些正在进行中的技术、创作与实验性项目。
+      "
+    />
+
+    <!-- 项目列表 -->
+    <div class="grid gap-8 md:grid-cols-2">
+      <ProjectCard
+        title="YIAlpha Blog"
+        description="
+        使用 Astro 与 Tailwind
+        搭建的个人博客与创作主页。
+
+        用于整理 AI、Game Tech、
+        World Building 与长期项目。
+        "
+        tags={["Astro", "Tailwind", "Frontend", "Design System"]}
+      />
+
+      <ProjectCard
+        title="Game AI Research"
+        description="
+        关于 Game AI、
+        行为逻辑与交互系统的学习与实验。
+
+        包括状态机、Agent 与 AI 行为设计。
+        "
+        tags={["Game AI", "LLM", "Agent", "Interactive System"]}
+      />
+
+      <ProjectCard
+        title="World Building Archive"
+        description="
+        长期进行中的世界观设定整理项目。
+
+        包括角色、组织、
+        历史与未来科技体系。
+        "
+        tags={["World Building", "Narrative", "Character", "Sci-Fi"]}
+      />
+
+      <ProjectCard
+        title="Linux & Server Lab"
+        description="
+        用于学习 Linux、
+        Docker、服务器部署与开发环境管理的实验空间。
+        "
+        tags={["Linux", "Docker", "Server", "DevOps"]}
+      />
+    </div>
+  </main>
+</MainLayout>

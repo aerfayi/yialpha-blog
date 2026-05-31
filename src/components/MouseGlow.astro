@@ -1,0 +1,17 @@
+<div id="mouse-glow" class="pointer-events-none fixed inset-0 z-30"></div>
+
+<script>
+  const glow = document.getElementById("mouse-glow");
+
+  window.addEventListener("mousemove", (e) => {
+    if (!glow) return;
+
+    glow.style.background = `
+      radial-gradient(
+        700px circle at ${e.clientX}px ${e.clientY}px,
+        rgba(56, 189, 248, 0.08),
+        transparent 40%
+      )
+    `;
+  });
+</script>

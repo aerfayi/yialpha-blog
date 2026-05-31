@@ -1,0 +1,85 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import GlassCard from "../components/GlassCard.astro";
+import SectionTitle from "../components/SectionTitle.astro";
+import TimelineItem from "../components/TimelineItem.astro";
+---
+
+<MainLayout title="About">
+  <main class="px-6 py-32">
+    <section class="mx-auto max-w-5xl">
+      <SectionTitle
+        eyebrow="ABOUT"
+        title="关于我"
+        description="
+        正在学习 AI、游戏技术与交互系统，
+        也长期进行世界观构筑与个人创作。
+
+        这个网站既是技术笔记，
+        也是一个不断扩展中的个人宇宙。
+        "
+      />
+
+      <div class="grid gap-8 md:grid-cols-2">
+        <GlassCard title="我正在做什么" color="cyan">
+          <p class="leading-8 text-zinc-400">
+            目前主要关注 AI 系统、 LLM、Game AI 与交互技术。
+            同时也在持续进行个人世界观、 角色设定与长期创作项目的构筑。
+          </p>
+        </GlassCard>
+
+        <GlassCard title="当前关注方向" color="violet">
+          <ul class="space-y-4 text-zinc-400">
+            <li>AI Engineering / LLM</li>
+            <li>Game AI 与交互系统</li>
+            <li>Frontend Creative Development</li>
+            <li>World Building 与个人创作</li>
+          </ul>
+        </GlassCard>
+      </div>
+
+      <!-- Timeline -->
+      <section class="mt-32">
+        <SectionTitle
+          eyebrow="TIMELINE"
+          title="成长轨迹"
+          description="
+    一些正在发生的事情，
+    以及未来准备前往的方向。
+    "
+        />
+
+        <div class="mt-16">
+          <TimelineItem
+            year="2025"
+            title="开始深入学习 AI 与 LLM"
+            description="
+      开始系统学习 AI、LLM 与 Agent，
+      同时重新构建自己的技术路线。
+      "
+          />
+
+          <TimelineItem
+            year="2026"
+            title="搭建个人博客与创作体系"
+            description="
+      使用 Astro 与 Tailwind
+      搭建个人网站，
+      整理技术、项目与世界观内容。
+      "
+          />
+
+          <TimelineItem
+            year="Future"
+            title="构筑 AI × Game Tech × World Building"
+            description="
+      希望未来能够把 AI、
+      游戏交互与长期世界观创作结合，
+      做出真正属于自己的作品。
+      "
+          />
+        </div>
+      </section>
+    </section>
+  </main>
+</MainLayout>

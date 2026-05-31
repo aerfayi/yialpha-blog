@@ -1,0 +1,152 @@
+---
+import MainLayout from "./MainLayout.astro";
+
+import type { CollectionEntry } from "astro:content";
+import type { BlogPostWithMeta } from "../utils/posts";
+
+type BlogPost = CollectionEntry<"blog">;
+
+interface Props {
+  post: BlogPost;
+  Content: any;
+
+  prevPost?: BlogPostWithMeta | null;
+  nextPost?: BlogPostWithMeta | null;
+
+  relatedPosts?: BlogPostWithMeta[];
+}
+
+const {
+  post,
+  Content,
+  prevPost = null,
+  nextPost = null,
+  relatedPosts = [],
+} = Astro.props;
+
+const coverImage = post.data.cover || "/covers/default-cover.jpg";
+
+const readingTime =
+  "readingTime" in post
+    ? post.readingTime
+    : Math.max(1, Math.ceil((post.body ?? "").split(/\s+/).length / 200));
+---
+
+<MainLayout
+  title={post.data.title}
+  description={post.data.description}
+  image={coverImage}
+>
+  <main class="mx-auto max-w-3xl px-8 pt-32 pb-32">
+    <img
+      src={coverImage}
+      alt={post.data.title}
+      class="mb-12 w-full h-64 rounded-3xl object-cover border border-white/10"
+    />
+
+    <header class="mb-16">
+      <div class="mb-6 flex flex-wrap items-center gap-4 text-sm text-zinc-500">
+        <span>{post.data.pubDate.toLocaleDateString()}</span>
+
+        <span>·</span>
+
+        <span>{readingTime} min read</span>
+
+        {
+          post.data.updatedDate && (
+            <>
+              <span>·</span>
+
+              <span>Updated: {post.data.updatedDate.toLocaleDateString()}</span>
+            </>
+          )
+        }
+      </div>
+
+      <h1 class="mb-8 text-5xl font-black leading-tight">
+        {post.data.title}
+      </h1>
+
+      <p class="mb-8 text-xl leading-relaxed text-zinc-400">
+        {post.data.description}
+      </p>
+
+      {
+        post.data.tags.length > 0 && (
+          <div class="flex flex-wrap gap-3">
+            {post.data.tags.map((tag) => (
+              <a
+                href={`/blog/tag/${tag}`}
+                class="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-sm text-zinc-300 hover:border-cyan-400/20 hover:text-cyan-300"
+              >
+                {tag}
+              </a>
+            ))}
+          </div>
+        )
+      }
+    </header>
+
+    <article
+      class="prose prose-invert prose-zinc max-w-none
+      prose-headings:font-bold
+      prose-h1:text-5xl
+      prose-h2:text-3xl
+      prose-h3:text-2xl
+      prose-p:leading-8
+      prose-p:text-zinc-300
+      prose-a:text-cyan-300
+      prose-strong:text-white
+      prose-code:text-cyan-200
+      prose-pre:border
+      prose-pre:border-white/10
+      prose-pre:bg-black/30
+      prose-img:rounded-2xl"
+    >
+      <Content />
+    </article>
+
+    <div class="mt-16 flex justify-between text-cyan-300">
+      {
+        prevPost && (
+          <a href={`/blog/${prevPost.id}`}>&larr; {prevPost.data.title}</a>
+        )
+      }
+
+      {
+        nextPost && (
+          <a href={`/blog/${nextPost.id}`}>{nextPost.data.title} &rarr;</a>
+        )
+      }
+    </div>
+
+    {
+      relatedPosts.length > 0 && (
+        <section class="mt-20">
+          <h2 class="mb-6 text-3xl font-bold text-white">相关文章</h2>
+
+          <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {relatedPosts.map((post) => (
+              <a
+                href={`/blog/${post.id}`}
+                class="group block rounded-2xl border border-white/5 bg-white/[0.03] p-4 backdrop-blur-xl transition hover:-translate-y-1 hover:border-cyan-400/20 hover:bg-white/[0.05]"
+              >
+                <img
+                  src={post.coverImage}
+                  alt={post.data.title}
+                  class="mb-3 h-32 w-full rounded-xl object-cover"
+                />
+
+                <h3 class="font-semibold text-white">{post.data.title}</h3>
+
+                <p class="mt-2 line-clamp-2 text-sm text-zinc-400">
+                  {post.data.description}
+                </p>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </main>
+</MainLayout>

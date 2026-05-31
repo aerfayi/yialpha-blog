@@ -1,0 +1,102 @@
+---
+import MainLayout from "../../../layouts/MainLayout.astro";
+
+import { getAllPosts } from "../../../utils/posts";
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+
+  const tags = [...new Set(posts.flatMap((post) => post.data.tags || []))];
+
+  return tags.map((tag) => ({
+    params: { tag },
+  }));
+}
+
+const { tag } = Astro.params;
+
+const posts = (await getAllPosts()).filter((post) =>
+  post.data.tags?.includes(tag!),
+);
+---
+
+<MainLayout title={`Tag · ${tag}`}>
+  <main class="mx-auto max-w-5xl px-8 py-32">
+    <h1 class="mb-12
+        text-5xl
+        font-black">
+      #{tag}
+    </h1>
+
+    <div class="space-y-8">
+      {
+        posts.map((post) => (
+          <a
+            href={`/blog/${post.id}`}
+            class="
+              group
+              block
+
+              rounded-3xl
+              border
+              border-white/5
+
+              bg-white/[0.03]
+
+              p-8
+
+              backdrop-blur-xl
+
+              transition
+              duration-300
+
+              hover:-translate-y-1
+              hover:border-cyan-400/20
+              hover:bg-white/[0.05]
+            "
+          >
+            <img
+              src={post.coverImage}
+              alt={post.data.title}
+              class="
+                mb-5
+                h-56
+                w-full
+
+                rounded-xl
+
+                object-cover
+
+                transition
+                duration-500
+
+                group-hover:scale-[1.02]
+              "
+            />
+
+            <p class="mb-2 text-sm text-zinc-500">
+              {post.data.pubDate.toLocaleDateString()}·{post.readingTime}
+              min read
+            </p>
+
+            <h2
+              class="
+                mb-3
+                text-3xl
+                font-bold
+
+                transition
+
+                group-hover:text-cyan-300
+              "
+            >
+              {post.data.title}
+            </h2>
+
+            <p class="text-zinc-400">{post.data.description}</p>
+          </a>
+        ))
+      }
+    </div>
+  </main>
+</MainLayout>

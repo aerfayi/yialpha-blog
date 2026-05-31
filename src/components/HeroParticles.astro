@@ -1,0 +1,73 @@
+<div class="absolute inset-0 overflow-hidden pointer-events-none">
+  {
+    Array.from({ length: 40 }).map((_, i) => {
+      const size = 2 + Math.random() * 6;
+
+      const colors = [
+        "rgba(56,189,248,0.9)", // cyan
+        "rgba(168,85,247,0.9)", // violet
+        "rgba(255,255,255,0.9)", // white
+      ];
+
+      const color = colors[Math.floor(Math.random() * colors.length)];
+
+      return (
+        <div
+          class="particle"
+          style={`
+            left:${Math.random() * 100}%;
+            top:${Math.random() * 100}%;
+
+            width:${size}px;
+            height:${size}px;
+
+            background:${color};
+
+            animation-delay:${Math.random() * 10}s;
+            animation-duration:${12 + Math.random() * 12}s;
+
+            opacity:${0.3 + Math.random() * 0.7};
+          `}
+        />
+      );
+    })
+  }
+</div>
+
+<style>
+  .particle {
+    position: absolute;
+
+    border-radius: 9999px;
+
+    filter: blur(1px);
+
+    box-shadow:
+      0 0 10px currentColor,
+      0 0 20px currentColor;
+
+    animation: float infinite ease-in-out;
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0px) translateX(0px) scale(1);
+
+      opacity: 0;
+    }
+
+    10% {
+      opacity: 1;
+    }
+
+    50% {
+      transform: translateY(-40px) translateX(20px) scale(1.4);
+    }
+
+    100% {
+      transform: translateY(-120px) translateX(-30px) scale(0.8);
+
+      opacity: 0;
+    }
+  }
+</style>

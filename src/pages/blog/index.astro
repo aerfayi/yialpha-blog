@@ -1,0 +1,61 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import SectionTitle from "../../components/SectionTitle.astro";
+import { getAllPosts } from "../../utils/posts"; // 我们之前写的工具函数
+
+const posts = await getAllPosts();
+---
+
+<MainLayout title="Blog">
+  <main class="mx-auto max-w-5xl px-8 py-32">
+    <!-- 标题 Section -->
+    <SectionTitle
+      eyebrow="BLOG"
+      title="记录"
+      description="关于 AI、开发、世界观，以及学习过程中的思考。"
+    />
+
+    <!-- 文章列表 -->
+    <div class="space-y-8 mt-8">
+      {
+        posts.map((post) => (
+          <a
+            href={`/blog/${post.id}`}
+            class="group block rounded-3xl border border-white/5 bg-white/[0.03] p-8 backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-cyan-400/20 hover:bg-white/[0.05]"
+          >
+            <img
+              src={post.coverImage}
+              alt={post.data.title}
+              class="mb-4 w-full h-56 object-cover rounded-xl transition duration-500 group-hover:scale-[1.02]"
+            />
+            <div class="p-2">
+              <p class="mb-2 text-sm text-zinc-500 flex flex-wrap gap-4">
+                <span>{post.data.pubDate.toLocaleDateString()}</span>
+                <span>·</span>
+                <span>{post.readingTime} min read</span>
+              </p>
+
+              <h2 class="mb-4 text-3xl font-bold transition group-hover:text-cyan-300">
+                {post.data.title}
+              </h2>
+
+              <p class="leading-7 text-zinc-400 mb-4">
+                {post.data.description}
+              </p>
+
+              {post.data.tags?.length > 0 && (
+                <div class="flex flex-wrap gap-3">
+                  {post.data.tags.map((tag) => (
+                    <span class="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-sm text-zinc-300">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </main>
+</MainLayout>
