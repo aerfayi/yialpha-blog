@@ -8,7 +8,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://yialpha.lilys.top",
+  site: "https://yialpha-blog.vercel.app",
   integrations: [mdx(), sitemap()],
 
   fonts: [
